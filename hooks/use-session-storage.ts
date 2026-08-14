@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
-export function useSessionStorage(key: string, initialValue: boolean) {
+export function useSessionStorage(
+  key: string,
+  initialValue: boolean,
+): [boolean, (newValue: boolean) => void] {
   const [value, setValue] = useState(initialValue);
   useEffect(() => {
     // hydrate from sessionStorage after mount — it's unavailable during server rendering
