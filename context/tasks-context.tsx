@@ -10,7 +10,6 @@ type TasksState = {
   filter: TaskFilter;
 };
 type TasksAction =
-  // descriminated union of action type -> tasksaction like intake binder, each object like individual form
   | { type: "ADD_TASK"; payload: Task }
   | { type: "REMOVE_TASK"; id: string }
   | { type: "TOGGLE_TASK"; id: string }
@@ -55,6 +54,8 @@ export function tasksReducer(
       return state;
   }
 }
+// an empty array caused an infinite loop when the app was first loaded, so I created a constant to avoid that
+const EMPTY_TASKS: Task[] = [];
 
 export function TasksProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(tasksReducer, {
@@ -66,13 +67,16 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
   const toggleTask = (id: string) => dispatch({ type: "TOGGLE_TASK", id });
   const setFilter = (filter: TaskFilter) =>
     dispatch({ type: "SET_FILTER", payload: filter });
-  const [storedTasks, setStoredTasks] = useLocalStorage<Task[]>("tasks", []);
+  const [, setStoredTasks] = useLocalStorage<Task[]>("tasks", EMPTY_TASKS);
 
   useEffect(() => {
-    dispatch({ type: "LOAD_TASKS", payload: storedTasks });
-  }, [storedTasks]);
+    const stored = localStorage.getItem("tasks");
+    if (stored) {
+      dispatch({ type: "LOAD_TASKS", payload: JSON.parse(stored) });
+    }
+  }, []);
 
-  // setStoredtasks isnt stablized, i would use usecallback to stabilize it, but I'm considering that stretch
+  // setStoredTasks isn't stabilized, i would use useCallback to stabilize it, but I'm considering that stretch
   useEffect(() => {
     setStoredTasks(state.tasks);
   }, [state.tasks, setStoredTasks]);
