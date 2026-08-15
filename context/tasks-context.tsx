@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useEffect } from "react";
 import { Task } from "@/types/task";
+import { useLocalStorage } from "../hooks/use-local-storage";
 
 type TaskFilter = "all" | "completed" | "pending";
 type TasksState = {
@@ -13,7 +14,8 @@ type TasksAction =
   | { type: "ADD_TASK"; payload: Task }
   | { type: "REMOVE_TASK"; id: string }
   | { type: "TOGGLE_TASK"; id: string }
-  | { type: "SET_FILTER"; payload: TaskFilter };
+  | { type: "SET_FILTER"; payload: TaskFilter }
+  | { type: "LOAD_TASKS"; payload: Task[] };
 
 export const TasksContext = createContext({
   tasks: [] as Task[],
@@ -47,6 +49,8 @@ export function tasksReducer(
       };
     case "SET_FILTER":
       return { ...state, filter: action.payload };
+    case "LOAD_TASKS":
+      return { ...state, tasks: action.payload };
     default:
       return state;
   }
@@ -62,6 +66,16 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
   const toggleTask = (id: string) => dispatch({ type: "TOGGLE_TASK", id });
   const setFilter = (filter: TaskFilter) =>
     dispatch({ type: "SET_FILTER", payload: filter });
+  const [storedTasks, setStoredTasks] = useLocalStorage<Task[]>("tasks", []);
+
+  useEffect(() => {
+    dispatch({ type: "LOAD_TASKS", payload: storedTasks });
+  }, [storedTasks]);
+
+  // setStoredtasks isnt stablized, i would use usecallback to stabilize it, but I'm considering that stretch
+  useEffect(() => {
+    setStoredTasks(state.tasks);
+  }, [state.tasks, setStoredTasks]);
 
   return (
     <TasksContext.Provider
