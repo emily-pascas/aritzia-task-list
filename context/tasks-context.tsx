@@ -3,6 +3,7 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
 import { Task } from "@/types/task";
 import { useLocalStorage } from "../hooks/use-local-storage";
+import { createTask, deleteTask } from "@/lib/api-client";
 
 type TaskFilter = "all" | "completed" | "pending";
 type TasksState = {
@@ -62,8 +63,14 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
     tasks: [],
     filter: "all",
   });
-  const addTask = (task: Task) => dispatch({ type: "ADD_TASK", payload: task });
-  const removeTask = (id: string) => dispatch({ type: "REMOVE_TASK", id });
+  const addTask = async (task: Task) => {
+    await createTask(task);
+    dispatch({ type: "ADD_TASK", payload: task });
+  };
+  const removeTask = async (id: string) => {
+    await deleteTask(id);
+    dispatch({ type: "REMOVE_TASK", id });
+  };
   const toggleTask = (id: string) => dispatch({ type: "TOGGLE_TASK", id });
   const setFilter = (filter: TaskFilter) =>
     dispatch({ type: "SET_FILTER", payload: filter });
