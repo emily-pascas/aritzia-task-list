@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task List — Aritzia Case Study
+
+A task management app built with Next.js, TypeScript, and React Context, built as a technical assessment for Aritzia's Digital Technology Team.
+
+## Features
+
+- Add, delete, filter, and complete tasks
+- Simulated API layer with a private key check and rate limiting
+- Locally persisted login and task list
+- Responsive, mobile-first layout
+- Unit tests with Jest and React Testing Library
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   npm install
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Create a .env.local file in the project root (see .env.example for the required variables):
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- API_SECRET_KEY=your-own-value
+- NEXT_PUBLIC_API_SECRET_KEY=your-own-value
 
-## Learn More
+3. Run the development server:
 
-To learn more about Next.js, take a look at the following resources:
+- npm run dev
+- Open http://localhost:3000, this is a simulated any entered values will work.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- npm run dev — start the development server
+- npm test — run the unit test suite
 
-## Deploy on Vercel
+## Architecture Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- State management: React Context + useReducer/useState, no external state library — proportionate to the app's actual scale (two pieces of shared state: auth and tasks).
+- Simulated API: Route Handlers (app/api/tasks/route.ts, app/api/tasks/[id]/route.ts) check a private key header, enforce a basic in-memory rate limit, and add faux latency before responding.
+- Persistence: sessionStorage for the login flag (cleared on tab close), localStorage for the task list (survives it).
