@@ -27,7 +27,7 @@ A task management app built with Next.js, TypeScript, and React Context, built a
 3. Run the development server:
 
 - npm run dev
-- Open http://localhost:3000, this is a simulated any entered values will work.
+- Open http://localhost:3000 (this is a simulated login, any entered values will work)
 
 ## Scripts
 
