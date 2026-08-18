@@ -9,7 +9,17 @@ import { useTasks } from "@/context/tasks-context";
 const TaskForm = () => {
   const { addTask } = useTasks();
   const [title, setTitle] = useState("");
-  const [dueDate, setDueDate] = useState("");
+
+  const getToday = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const [dueDate, setDueDate] = useState(getToday());
+
   return (
     <div>
       <form
@@ -23,7 +33,7 @@ const TaskForm = () => {
             completed: false,
           });
           setTitle("");
-          setDueDate("");
+          setDueDate(getToday());
         }}
       >
         <Label htmlFor="title">Task Name</Label>{" "}
@@ -32,6 +42,7 @@ const TaskForm = () => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
         <Label htmlFor="due-date" className="mt-1">
           Due Date
@@ -41,6 +52,7 @@ const TaskForm = () => {
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
+          required
         />
         <Button type="submit" className="mt-1">
           Create Task
