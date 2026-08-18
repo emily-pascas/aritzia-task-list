@@ -24,9 +24,11 @@ const TaskList = () => {
     <Card className="bg-card/10 backdrop-blur-sm">
       <CardContent>
         <TaskFilter />
-        {filteredTasks.map((task) => (
-          <TaskItem key={task.id} task={task} />
-        ))}
+        <div className="max-h-80 md:max-h-96 overflow-y-auto">
+          {filteredTasks.map((task) => (
+            <TaskItem key={task.id} task={task} />
+          ))}
+        </div>
       </CardContent>
     </Card>
   );

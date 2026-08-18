@@ -9,7 +9,7 @@ import {
 } from "react";
 import { Task } from "@/types/task";
 import { useLocalStorage } from "../hooks/use-local-storage";
-import { createTask, deleteTask } from "@/lib/api-client";
+import { createTask, deleteTask, RateLimitError } from "@/lib/api-client";
 
 type TaskFilter = "all" | "completed" | "pending";
 type TasksState = {
@@ -70,17 +70,33 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
     filter: "all",
   });
   const addTask = async (task: Task) => {
-    await createTask(task);
-    dispatch({ type: "ADD_TASK", payload: task });
+    try {
+      await createTask(task);
+      dispatch({ type: "ADD_TASK", payload: task });
+    } catch (error) {
+      if (error instanceof RateLimitError) {
+        alert("Too many requests, wait a moment and try again!");
+      } else {
+        alert("Something went wrong adding this task, try again!");
+      }
+    }
   };
   const removeTask = async (id: string) => {
-    await deleteTask(id);
-    dispatch({ type: "REMOVE_TASK", id });
+    try {
+      await deleteTask(id);
+      dispatch({ type: "REMOVE_TASK", id });
+    } catch (error) {
+      if (error instanceof RateLimitError) {
+        alert("Too many requests, wait a moment and try again!");
+      } else {
+        alert("Something went wrong deleting this task, try again!");
+      }
+    }
   };
   const toggleTask = (id: string) => dispatch({ type: "TOGGLE_TASK", id });
   const setFilter = (filter: TaskFilter) =>
     dispatch({ type: "SET_FILTER", payload: filter });
-  const [, setStoredTasks] = useLocalStorage<Task[]>("tasks", EMPTY_TASKS);
+  const [, setStoredTasks] = useLocalStorage("tasks", EMPTY_TASKS);
 
   useEffect(() => {
     const stored = localStorage.getItem("tasks");
