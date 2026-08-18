@@ -8,22 +8,22 @@ const TaskFilter = () => {
   return (
     <div>
       <Button
-        variant={filter === "all" ? "default" : "outline"}
+        variant={filter === "all" ? "default" : "ghost"}
         onClick={() => setFilter("all")}
       >
         All
       </Button>
       <Button
-        variant={filter === "pending" ? "default" : "outline"}
+        variant={filter === "pending" ? "default" : "ghost"}
         onClick={() => setFilter("pending")}
       >
-        pending
+        Pending
       </Button>
       <Button
-        variant={filter === "completed" ? "default" : "outline"}
+        variant={filter === "completed" ? "default" : "ghost"}
         onClick={() => setFilter("completed")}
       >
-        completed
+        Completed
       </Button>
     </div>
   );

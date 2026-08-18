@@ -13,34 +13,38 @@ const TaskForm = () => {
   return (
     <div>
       <form
+        className="mb-8"
         onSubmit={(e) => {
           e.preventDefault();
           addTask({
-            id: crypto.randomUUID(),
             title,
             dueDate,
+            id: crypto.randomUUID(),
             completed: false,
           });
           setTitle("");
           setDueDate("");
-          //   console.log("task", title, dueDate);
         }}
       >
-        <Label htmlFor="title">Task</Label>{" "}
+        <Label htmlFor="title">Task Name</Label>{" "}
         <Input
           id="title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-        ></Input>
-        <Label htmlFor="due-date">Due Date</Label>
+        />
+        <Label htmlFor="due-date" className="mt-1">
+          Due Date
+        </Label>
         <Input
           id="due-date"
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
-        ></Input>
-        <Button type="submit">Submit</Button>
+        />
+        <Button type="submit" className="mt-1">
+          Create Task
+        </Button>
       </form>
     </div>
   );
