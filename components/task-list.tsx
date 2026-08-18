@@ -13,7 +13,13 @@ const TaskList = () => {
       if (filter === "completed") return task.completed;
       return true;
     })
-    .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+    //first sort by completed status and then by date
+    .sort((a, b) => {
+      if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+      }
+      return a.dueDate.localeCompare(b.dueDate);
+    });
   return (
     <Card className="bg-card/10 backdrop-blur-sm">
       <CardContent>
