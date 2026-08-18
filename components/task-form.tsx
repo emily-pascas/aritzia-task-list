@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/context/tasks-context";
-import TaskList from "./task-list";
 
 const TaskForm = () => {
   const { addTask } = useTasks();
@@ -27,7 +26,7 @@ const TaskForm = () => {
           //   console.log("task", title, dueDate);
         }}
       >
-        <Label htmlFor="title">Task</Label>
+        <Label htmlFor="title">Task</Label>{" "}
         <Input
           id="title"
           type="text"

@@ -46,7 +46,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <AuthProvider>
-        <body className="min-h-full flex flex-col">{children}</body>
+        <body className="min-h-full flex flex-col relative">
+          <h1 className="absolute top-0 left-0 z-10 font-heading text-4xl italic p-4 text-white">
+            / Task List
+          </h1>
+          {children}
+        </body>
       </AuthProvider>
     </html>
   );
