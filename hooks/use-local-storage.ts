@@ -12,6 +12,7 @@ export function useLocalStorage(
   useEffect(() => {
     const storedValue = localStorage.getItem(key);
     if (storedValue !== null) {
+      //need to hydrate from browser storage
       setValue(JSON.parse(storedValue));
     } else {
       localStorage.setItem(key, JSON.stringify(initialValue));

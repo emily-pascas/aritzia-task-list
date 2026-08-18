@@ -12,6 +12,7 @@ export function useSessionStorage(
     // hydrate from sessionStorage after mount — it's unavailable during server rendering
     const storedValue = sessionStorage.getItem(key);
     if (storedValue !== null) {
+      //need to hydrate from browser storage
       setValue(JSON.parse(storedValue));
     } else {
       sessionStorage.setItem(key, JSON.stringify(initialValue));
