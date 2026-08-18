@@ -20,19 +20,23 @@ const LoginForm = () => {
           router.push("/tasks");
         }}
       >
-        <Label className="pb-2">Username</Label>
+        <Label className="pb-2" htmlFor="username">
+          Username
+        </Label>
         <Input
           type="text"
+          id="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className=""
         />
-        <Label className="py-2">Password</Label>
+        <Label className="py-2" htmlFor="password">
+          Password
+        </Label>
         <Input
           type="password"
+          id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className=""
         />
         <Button type="submit" className="mt-4">
           Login
