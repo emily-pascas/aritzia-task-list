@@ -17,5 +17,9 @@ export function useLocalStorage(
       localStorage.setItem(key, JSON.stringify(initialValue));
     }
   }, [key, initialValue]);
-  return [value, setValue];
+  const setStoredValue = (newValue: Task[]) => {
+    setValue(newValue);
+    localStorage.setItem(key, JSON.stringify(newValue));
+  };
+  return [value, setStoredValue];
 }

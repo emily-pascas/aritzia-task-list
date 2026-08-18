@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useReducer, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useRef,
+} from "react";
 import { Task } from "@/types/task";
 import { useLocalStorage } from "../hooks/use-local-storage";
 import { createTask, deleteTask } from "@/lib/api-client";
@@ -83,8 +89,12 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // setStoredTasks isn't stabilized, i would use useCallback to stabilize it, but I'm considering that stretch
+  const isFirstRender = useRef(true);
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     setStoredTasks(state.tasks);
   }, [state.tasks, setStoredTasks]);
 
